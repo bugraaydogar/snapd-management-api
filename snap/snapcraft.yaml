@@ -1,0 +1,38 @@
+name: snapd-management-snap
+base: core20
+version: '0.1' 
+summary: REST API to communicate with snapd-rest-api
+description: |
+  An example REST API to demonstrate communication with snapd-rest-api
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: arm64
+  - build-on: amd64
+
+
+apps:
+  backend:
+    command: launch.sh
+    daemon: simple
+    plugs:
+      - network
+      - network-bind
+      - snapd-control
+
+parts:
+  backend:
+    plugin: python
+    source: backend
+    requirements: 
+      - requirements.txt
+    
+  python-source:
+    source: backend
+    plugin: dump
+
+  launcher:
+    source: bin
+    plugin: dump
